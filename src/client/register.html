@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <title>Регистрация</title>
     <meta charset="utf-8" />
 </head>
 <body>
     <h1>Введите данные</h1>
-    <form action="/register" method="post">
+    <form action="/" method="GET">
         <label>Имя</label><br>
-        <input type="text" name="userName" /><br><br>
+        <input type="text" name="name" /><br><br>
         <label>Возраст</label><br>
-        <input type="number" name="userAge" /><br><br>
+        <input type="number" name="age" /><br><br>
         <input type="submit" value="Отправить" />
     </form>
+
+    <script>
+        $("form").submit(function (e) {
+            e.preventDefault();
+            var name = this.elements["name"].value;
+            var age = this.elements["age"].value;
+            if (name.length === 0)
+                alert('Потыкай кнопок')
+            else
+                GetUsers(name, age);
+        });
+        function GetUsers(name, age) {
+            $.ajax({
+                url: "/",
+                type: "GET",
+                contentType: "application/json",
+                // success: function (users) {
+                //     var rows = "";
+                //     $.each(users, function (index, user) {
+                //         // добавляем полученные элементы в таблицу
+                //         rows += row(user);
+                //     })
+                //     // $("table tbody").append(rows);
+                //  }
+            });
+        }
+    </script>
 </body>
 </html>

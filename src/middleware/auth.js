@@ -1,6 +1,6 @@
 
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../model/user');
 
 const auth = async (req, res, next) => {
     try{
@@ -14,7 +14,8 @@ const auth = async (req, res, next) => {
         req.user = user 
         next()
     } catch (e) {
-        res.status(401).send({error: 'Please autentificate'})
+        res.sendFile(process.cwd() + "/src/client/register.html");
+        // res.status(401).send({error: 'Please autentificate'})
     }
 }
 
