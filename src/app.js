@@ -37,8 +37,9 @@ console.log(stateOfConnection)
 const app = express()
 
 app.use(express.json())
-app.use('/api/users', router.userRouter)
+app.use('/', router.userRouter)
 
-app.listen(3000, function () {
-    console.log('север дует на http://localhost:3000 '.black.bgGreen)
+
+app.listen(process.env.PORT, function () {
+    console.log(`север дует на http://localhost:${process.env.PORT} `.black.bgGreen)
 })

@@ -32,23 +32,35 @@ class UserController {
         }
     }    
     getUser = async (req, res) => {
+        // try {
+        //     const result = await service.get(req.params.id)
+        //     res.sendFile(process.cwd() + "/client/register.html");
+        //     // res.send(result)
+        //     console.log(req.method.green, req.url)
+        // } catch (e) {
+        //     res.status(400).send({error:e.message})
+        // }
+    }
+    getAllUser = async (req, res) => {
         try {
-            const result = await service.get(req.params.id)
+            const result = await service.getAll()
+            // res.sendFile(process.cwd() + "/src/client/register.html");
             res.send(result)
+            console.log(req.method.green, req.url)
+        } catch (e) {
+            res.status(400).send({error:e.message})
+        }
+    } 
+    getIndex = async (req, res) => {
+        try {
+            const result = await service.getAll()
+            res.sendFile(process.cwd() + "/src/client/index.html");
+            // res.send(result)
             console.log(req.method.green, req.url)
         } catch (e) {
             res.status(400).send({error:e.message})
         }
     }
-    getAllUser = async (req, res) => {
-        try {
-            const result = await service.getAll()
-            res.send(result)
-            console.log(req.method.green, req.url)
-        } catch (e) {
-            res.status(400).send({error:e.message})
-        }
-    }    
 }
 
 module.exports = UserController;
