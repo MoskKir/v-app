@@ -1,8 +1,10 @@
 const User = require('../model/user')
 
 const auth = async function (req) {
-    console.log(req)
     const user = await User.findByCredentials(req.name, req.password) 
+    const token = await user.generateAuthToken() 
+    
+    return {user, token}
 }
 
 const add = async function (req) {

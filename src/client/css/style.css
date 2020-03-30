@@ -6,7 +6,16 @@ header {
 }
 header {
     display: flex;
+    justify-content: space-between;
 }
 .user-auth {
     display: flex;
+}
+header > .panel-body {
+    display: flex;
+}
+.auth-input {
+    width: 150px;
+    height: 25px;
+    margin: 0 5px;
 }

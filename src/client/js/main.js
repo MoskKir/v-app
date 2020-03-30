@@ -1,8 +1,41 @@
+let token = localStorage.getItem('token');
+if (token) {    
+    toogleAuthBtn()
+} 
+
+function toogleAuthBtn(user) {
+    console.log(user)
+    $('.user-auth').remove();
+    const container = document.createElement('div')
+    container.classList.add('panel-body')
+
+    const name = document.createElement('div')
+    name.innerText = `Приветики ${user.user.name}`
+
+    const button = document.createElement('button')
+    button.classList.add('btn')
+    button.classList.add('btn-sm')
+    button.classList.add('btn-primary')
+    button.innerText = 'Выйти'
+
+    button.setAttribute('type', 'submit')
+    button.addEventListener('click', () => {
+        localStorage.removeItem('token')
+        location.reload()
+    })
+
+    container.append(name)
+    container.append(button)
+    $('header').append(container)
+}
 // Получение всех пользователей
 function GetUsers() {
     $.ajax({
         url: "/api/users",
         type: "GET",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },        
         contentType: "application/json",
         success: function (users) {
             var rows = "";
@@ -19,6 +52,9 @@ function GetUser(id) {
     $.ajax({
         url: "/api/users/"+id,
         type: "GET",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }, 
         contentType: "application/json",
         success: function (user) {
             var form = document.forms["userForm"];
@@ -40,8 +76,15 @@ function AuthUser(userName, userPassword) {
         }),
         success: function (user) {
             resetAuthForm();
-            console.log('Успешная аунтефикация')
+            localStorage.setItem('token', user.token)
+            GetUsers();
+            toogleAuthBtn(user);
+
+            // $('.user-auth').remove();
             // $("table tbody").append(row(user));
+        },
+        error: function() {
+            alert('Неверный логин/пароль')
         }
     })
 }
@@ -51,6 +94,9 @@ function CreateUser(userName, userAge, userPassword) {
         url: "api/users",
         contentType: "application/json",
         method: "POST",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }, 
         data: JSON.stringify({
             name: userName,
             age: userAge,
@@ -59,6 +105,9 @@ function CreateUser(userName, userAge, userPassword) {
         success: function (user) {
             reset();
             $("table tbody").append(row(user));
+        },
+        error: function(error) {
+            alert(error)
         }
     })
 }
@@ -68,6 +117,9 @@ function EditUser(userId, userName, userAge) {
         url: "api/users",
         contentType: "application/json",
         method: "PUT",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }, 
         data: JSON.stringify({
             id: userId,
             name: userName,
@@ -87,7 +139,6 @@ function reset() {
     form.elements["id"].value = 0;
 }
 function resetAuthForm() {
-    console.log('Reset authForm')
     var form = document.forms["userAuth"];
     form.reset();
     form.elements["id"].value = 0;
@@ -99,6 +150,9 @@ function DeleteUser(id) {
         url: "api/users/"+id,
         contentType: "application/json",
         method: "DELETE",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }, 
         success: function (user) {
             $("tr[data-rowid='" + user._id + "']").remove();
         }
@@ -132,10 +186,8 @@ $("#editUserForm").submit(function (e) {
 // Авторизация 
 $("#userAuth").submit(function (e) {
     e.preventDefault();
-    console.log('userauth send');
     var name = this.elements["name"].value;
     var password = this.elements["psw"].value;
-    console.log(name, password)
     AuthUser(name, password)
 });
 
