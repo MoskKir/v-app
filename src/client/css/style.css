@@ -4,3 +4,9 @@ header {
     color: white;
     padding-left: 20px;
 }
+header {
+    display: flex;
+}
+.user-auth {
+    display: flex;
+}

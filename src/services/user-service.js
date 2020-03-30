@@ -1,5 +1,10 @@
 const User = require('../model/user')
 
+const auth = async function (req) {
+    console.log(req)
+    const user = await User.findByCredentials(req.name, req.password) 
+}
+
 const add = async function (req) {
     const user = new User(req)
     await user.save()
@@ -23,6 +28,7 @@ const del = async function (req) {
 }
 
 module.exports = {
+    auth,
     add,
     get,
     update,

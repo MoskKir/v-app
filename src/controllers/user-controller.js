@@ -3,6 +3,17 @@ const colors = require('colors')
 
 class UserController {
     constructor () {}
+    auth = async (req, res) => {
+        try {
+            // console.log(req.body)
+            const result = await service.auth(req.body)
+            res.status(201).send(result)
+            
+            // console.log(req.method.yellow, req.url)
+        } catch (e) {
+            res.status(400).send({error:e.message})
+        }
+    }
     addUser = async (req, res) => {
         try {
             const result = await service.add(req.body)
